@@ -1,0 +1,70 @@
+{
+  "name": "dwarf",
+  "spriteMap": "dwarf.png",
+  "tileWidth": 38,
+  "tileHeight": 32,
+  "scale": 1.2,
+  "healthBarOffset": 0.2,
+  "animations": {
+    "right": {
+      "start": 0,
+      "end": 4,
+      "frameRate": 10,
+      "repeat": -1
+    },
+    "left": {
+      "start": 72,
+      "end": 76,
+      "frameRate": 10,
+      "repeat": -1
+    },
+    "hurtLeft": {
+      "start": 120,
+      "end": 123,
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "hurtRight": {
+      "start": 64,
+      "end": 67,
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "attackLeft": {
+      "start": 80,
+      "end": 86,
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "attackRight": {
+      "start": 16,
+      "end": 22,
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "attackDown": {
+      "start": 32,
+      "end": 33,
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "attackUp": {
+      "start": 32,
+      "end": 33,
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "deathRight": {
+      "start": 56,
+      "end": 62,
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "deathLeft": {
+      "start": 120,
+      "end": 126,
+      "frameRate": 10,
+      "repeat": 0
+    }
+  }
+}

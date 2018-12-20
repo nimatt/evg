@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser.js"></script>
+    <style type="text/css">
+        @font-face {
+            font-family: arcade;
+            src: url("/font/arcadeclassic.ttf");
+        }
+
+        html,
+        body {
+            margin: 0;
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            background-color: #000;
+        }
+
+        .game-container {
+            height: 100%;
+            background-color: #000;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pre-game {
+            color: #00cc00;
+            font-family: arcade;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        button {
+            display: none;
+            width: 120px;
+            height: 60px;
+            border: 1px solid #00cc00;
+            color: #00cc00;
+            box-shadow: #00cc00 2px 2px 8px;
+            background-color: #000;
+            font-family: arcade;
+            font-weight: 500;
+            font-size: 20px;
+            cursor: pointer;
+            outline-style: none;
+        }
+
+        button:hover {
+            color: #00aa00;
+            border-color: #00aa00;
+        }
+
+        button:active {
+            box-shadow: #00cc00 1px 1px 5px;
+        }
+
+        #game {
+            display: none;
+        }
+
+        .player-area {
+            width: 300px;
+            margin: 12px;
+            flex-grow: 0;
+            font-family: arcade;
+            color: #00cc00;
+            text-shadow: 0 0 2px #00cc00;
+        }
+
+        .player-area h1 {
+            padding-left: 6px;
+            margin-bottom: 0;
+            font-weight: 300;
+        }
+
+        .player-area hr {
+            margin-bottom: 18px;
+            border-color: #00cc00;
+        }
+
+        .player {
+            position: absolute;
+            box-sizing: border-box;
+            display: flex;
+            font-size: 20px;
+            width: 300px;
+            transition: transform ease-in 200ms, opacity linear 200ms;
+        }
+
+        .player-name {
+            padding: 12px;
+            flex-grow: 1;
+            flex-shrink: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-score {
+            margin-left: 6px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            width: 40px;
+            text-align: center;
+            flex-grow: 0;
+            flex-shrink: 0;
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <script type="module" src="index.js"></script>
+    <div class="game-container">
+        <div class="pre-game">Waiting<br />for<br />players...</div>
+        <button>Launch</button>
+        <div id="game"></div>
+    </div>
+    <div class="player-area">
+        <h1>Scores</h1>
+        <hr />
+        <div class="players">
+        </div>
+    </div>
+</body>
+</html>

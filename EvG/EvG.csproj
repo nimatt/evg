@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\index.ts" />
+    <Content Remove="wwwroot\js\API.ts" />
+    <Content Remove="wwwroot\js\Direction.ts" />
+    <Content Remove="wwwroot\js\Game.ts" />
+    <Content Remove="wwwroot\js\IAnimationSpec.ts" />
+    <Content Remove="wwwroot\js\IAttackAction.ts" />
+    <Content Remove="wwwroot\js\IGameEnded.ts" />
+    <Content Remove="wwwroot\js\IGameSpec.ts" />
+    <Content Remove="wwwroot\js\IMap.ts" />
+    <Content Remove="wwwroot\js\IMoveAction.ts" />
+    <Content Remove="wwwroot\js\IPlayer.ts" />
+    <Content Remove="wwwroot\js\ITileSet.ts" />
+    <Content Remove="wwwroot\js\IUnit.ts" />
+    <Content Remove="wwwroot\js\IUnitSpec.ts" />
+    <Content Remove="wwwroot\js\MainScene.ts" />
+    <Content Remove="wwwroot\js\ScoreBoard.ts" />
+    <Content Remove="wwwroot\js\TileType.ts" />
+    <Content Remove="wwwroot\js\Unit.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Dockerfile" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Models\Unit.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\index.ts" />
+    <TypeScriptCompile Include="wwwroot\js\IAttackAction.ts" />
+    <TypeScriptCompile Include="wwwroot\js\IGameEnded.ts" />
+    <TypeScriptCompile Include="wwwroot\js\IMoveAction.ts" />
+    <TypeScriptCompile Include="wwwroot\js\API.ts" />
+    <TypeScriptCompile Include="wwwroot\js\Direction.ts" />
+    <TypeScriptCompile Include="wwwroot\js\Game.ts" />
+    <TypeScriptCompile Include="wwwroot\js\IAnimationSpec.ts" />
+    <TypeScriptCompile Include="wwwroot\js\IGameSpec.ts" />
+    <TypeScriptCompile Include="wwwroot\js\IMap.ts" />
+    <TypeScriptCompile Include="wwwroot\js\IPlayer.ts" />
+    <TypeScriptCompile Include="wwwroot\js\ITileSet.ts" />
+    <TypeScriptCompile Include="wwwroot\js\IUnit.ts" />
+    <TypeScriptCompile Include="wwwroot\js\IUnitSpec.ts" />
+    <TypeScriptCompile Include="wwwroot\js\MainScene.ts" />
+    <TypeScriptCompile Include="wwwroot\js\ScoreBoard.ts" />
+    <TypeScriptCompile Include="wwwroot\js\TileType.ts" />
+    <TypeScriptCompile Include="wwwroot\js\Unit.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\assets\maps\basic\basic..json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\maps\basic\tileset_complet.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\index.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

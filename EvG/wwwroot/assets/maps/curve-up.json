@@ -1,0 +1,13 @@
+﻿{
+  "name": "Curve up",
+  "tilemap": "curve-up/curve-up.json",
+  "openTiles": [ 11 ],
+  "units": [
+    { "type": "minotaur" },
+    { "type": "minotaur" },
+    { "type": "minotaur" },
+    { "type": "dwarf" },
+    { "type": "dwarf" },
+    { "type": "dwarf" }
+  ]
+}

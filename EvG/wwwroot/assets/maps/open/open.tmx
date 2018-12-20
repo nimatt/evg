@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="tileset_complet" tilewidth="32" tileheight="32" tilecount="81" columns="9">
+  <image source="../basic/tileset_complet.png" width="288" height="288"/>
+ </tileset>
+ <layer id="1" name="Tile Layer 1" width="10" height="10">
+  <data encoding="csv">
+1,2,2,2,2,2,2,2,2,3,
+10,11,11,11,11,11,11,11,11,12,
+10,11,11,11,11,11,11,11,11,12,
+10,11,11,11,11,11,11,11,11,12,
+10,11,11,11,11,11,11,11,11,12,
+10,11,11,11,11,11,11,11,11,12,
+10,11,11,11,11,11,11,11,11,12,
+10,11,11,11,11,11,11,11,11,12,
+10,11,11,11,11,11,11,11,11,12,
+19,20,20,20,20,20,20,20,20,21
+</data>
+ </layer>
+</map>

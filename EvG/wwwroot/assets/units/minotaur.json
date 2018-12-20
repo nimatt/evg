@@ -1,0 +1,70 @@
+{
+  "name": "minotaur",
+  "spriteMap": "minotaur.png",
+  "tileWidth": 96,
+  "tileHeight": 96,
+  "scale": 0.8,
+  "healthBarOffset": 0.5,
+  "animations": {
+    "right": {
+      "start": 0,
+      "end": 4,
+      "frameRate": 10,
+      "repeat": -1
+    },
+    "left": {
+      "start": 100,
+      "end": 104,
+      "frameRate": 10,
+      "repeat": -1
+    },
+    "hurtRight": {
+      "start": 80,
+      "end": 82,
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "hurtLeft": {
+      "start": 180,
+      "end": 182,
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "attackRight": {
+      "start": 30,
+      "end": 38,
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "attackLeft": {
+      "start": 130,
+      "end": 138,
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "attackUp": {
+      "start": 60,
+      "end": 68,
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "attackDown": {
+      "start": 60,
+      "end": 68,
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "deathRight": {
+      "start": 90,
+      "end": 95,
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "deathLeft": {
+      "start": 190,
+      "end": 195,
+      "frameRate": 10,
+      "repeat": 0
+    }
+  }
+}

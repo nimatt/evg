@@ -1,0 +1,13 @@
+﻿{
+  "name": "Open",
+  "tilemap": "open/open.json",
+  "openTiles": [ 11 ],
+  "units": [
+    { "type": "minotaur" },
+    { "type": "minotaur" },
+    { "type": "minotaur" },
+    { "type": "dwarf" },
+    { "type": "dwarf" },
+    { "type": "dwarf" }
+  ]
+}
