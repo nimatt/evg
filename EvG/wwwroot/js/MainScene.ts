@@ -29,6 +29,9 @@ export class MainScene extends Phaser.Scene {
                 let actor: Unit | null = null;
                 if (this.units.has(unit.id)) {
                     actor = this.units.get(unit.id);
+                    if (actor != null && actor.health != unit.health) {
+                        actor.damage(actor.health - unit.health);
+                    }
                 }
                 if (action.type === 'move') {
                     if (actor != null) {

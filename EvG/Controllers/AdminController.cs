@@ -28,7 +28,8 @@ namespace EvG.Controllers
         [HttpPut("api/[controller]/game-config")]
         public ActionResult SetGameConfig([FromBody]GameConfig config)
         {
-            _gameEngine.GameValue = config.GameValue;
+            _gameEngine.GameConfig.GameValue = config.GameValue;
+            _gameEngine.GameConfig.ForceMove = config.ForceMove;
             return Ok();
         }
     }

@@ -9,7 +9,7 @@ namespace EvG.Models
     {
         public Game CurrentGame { get; private set; }
         public List<Player> Players { get; } = new List<Player>();
-        public int GameValue { get; set; } = 1;
+        public GameConfig GameConfig { get; set; } = new GameConfig { GameValue = 1 };
 
         public event EventHandler<GameEventArgs> OnGameCreated;
         public event EventHandler<GameEventArgs> OnGameEnded;
@@ -36,7 +36,7 @@ namespace EvG.Models
                 return;
             }
 
-            CurrentGame = new Game(spec, player1, player2);
+            CurrentGame = new Game(spec, player1, player2, GameConfig);
             CurrentGame.Spec.Players = new Player[] { player1, player2 };
             CurrentGame.OnGameEnded += HandleGameEnding;
             OnGameCreated?.Invoke(this, new GameEventArgs("game-created"));
@@ -83,7 +83,7 @@ namespace EvG.Models
             OnGameEnded?.Invoke(this, new GameEventArgs("game-ended") { Winner = winner });
             if (winner != null)
             {
-                winner.Score += GameValue;
+                winner.Score += GameConfig.GameValue;
                 OnPlayerUpdated?.Invoke(this, new PlayerEventArgs { EventType = "player-updated", Player = winner });
             }
         }

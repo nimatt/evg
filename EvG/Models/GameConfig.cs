@@ -8,5 +8,6 @@ namespace EvG.Models
     public class GameConfig
     {
         public int GameValue { get; set; }
+        public bool ForceMove { get; set; }
     }
 }

@@ -16,6 +16,7 @@ namespace EvG.Models
         public event EventHandler<DeathEventArgs> OnUnitDied;
         public event EventHandler OnMaxRounds;
         public event EventHandler<GameEventArgs> OnGameEnded;
+        public GameConfig GameConfig { get; set; }
         public Player[] Players { get; }
         public Player Winner
         {
@@ -54,8 +55,9 @@ namespace EvG.Models
         private Dictionary<string, Player> PlayerLookup = new Dictionary<string, Player>();
         private int round = 0;
 
-        public Game(GameSpec spec, Player player1, Player player2)
+        public Game(GameSpec spec, Player player1, Player player2, GameConfig gameConfig)
         {
+            GameConfig = gameConfig;
             Spec = spec;
             Units = spec.Units.Select((u) => u).ToArray();
             foreach (var unit in Units)
@@ -89,8 +91,13 @@ namespace EvG.Models
                         var performedActions = new HashSet<ActionType>();
                         foreach (var action in actions)
                         {
-                            if (!performedActions.Contains(action.Type))
+                            if (!performedActions.Contains(action.Type) ||
+                               (action.Type == ActionType.Move && GameConfig.ForceMove && unit.Health > 1))
                             {
+                                if (performedActions.Contains(action.Type) && action.Type == ActionType.Move && GameConfig.ForceMove)
+                                {
+                                    unit.Health--;
+                                }
                                 PerformAction(action, unit);
                                 performedActions.Add(action.Type);
                                 await Task.Delay(500);
