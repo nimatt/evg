@@ -67,6 +67,7 @@ namespace EvG.Models
 
         public void Start()
         {
+            Spec.Active = true;
             Updater = new Task(async () =>
             {
                 while (Winner == null && round < MaxRounds)
@@ -115,6 +116,7 @@ namespace EvG.Models
                         );
                     } catch { /* We dont' care */ }
                 }
+                Spec.Active = false;
             });
             Updater.Start();
         }

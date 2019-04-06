@@ -19,6 +19,7 @@ namespace EvG.Models
         public bool[][] FloorMap { get; private set; }
         public Unit[] Units { get; private set; }
         public Player[] Players { get; set; }
+        public bool Active { get; set; }
 
         public GameSpec() : this(GetRandomMap()) { }
 

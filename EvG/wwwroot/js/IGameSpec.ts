@@ -8,4 +8,5 @@ export interface IGameSpec {
     tilemap: string;
     units: IUnit[];
     players: IPlayer[];
+    active: boolean;
 }

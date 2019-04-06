@@ -4,20 +4,31 @@ import { ScoreBoard } from './js/ScoreBoard.js';
 import { IPlayer } from './js/IPlayer.js';
 
 let currentGame: Game | null = null;
+let continuePlaying: boolean = true;
+const api = new API();
+const scoreBoard = new ScoreBoard(document.querySelector('.players'))
+const startButton = document.querySelector('#start-button') as HTMLButtonElement;
+const stopButton = document.querySelector('#stop-button') as HTMLButtonElement;
+const game = (document.querySelector('#game') as HTMLDivElement);
 
 function showGame() {
-    document.querySelector('button').style.display = 'none';
-    const game = (document.querySelector('#game') as HTMLDivElement);
+    startButton.style.display = 'none';
     if (currentGame != null) {
         currentGame.destroy();
     }
+    stopButton.style.display = 'unset';
     game.style.display = 'unset';
 
     currentGame = new Game(api);
 }
 
-const api = new API();
-const scoreBoard = new ScoreBoard(document.querySelector('.players'))
+function endGaming() {
+    currentGame.destroy();
+    currentGame = null;
+    startButton.style.display = 'unset';
+    stopButton.style.display = 'none';
+    game.style.display = 'none';
+}
 
 const eventSource = new EventSource('/api/game');
 eventSource.onmessage = (event) => {
@@ -34,7 +45,11 @@ eventSource.onmessage = (event) => {
     } else if (action.type === 'game-ended') {
         console.log('Game ended');
         setTimeout(() => {
-            api.createGame();
+            if (continuePlaying) {
+                api.createGame();
+            } else {
+                endGaming();
+            }
         }, 3000);
     } else if (action.type.startsWith('player') && action.player != null) {
         console.log('Player updated');
@@ -43,7 +58,7 @@ eventSource.onmessage = (event) => {
             const preInfo = document.querySelector('.pre-game') as HTMLElement;
             if (preInfo.style.display == '') {
                 preInfo.style.display = 'none'
-                document.querySelector('button').style.display = 'unset';
+                startButton.style.display = 'unset';
             }
         }
     }
@@ -51,7 +66,8 @@ eventSource.onmessage = (event) => {
 
 api.getGameSpec()
     .then((spec) => {
-        if (spec) {
+        if (spec != null && spec.active) {
+            startButton.style.display = 'none';
             showGame();
         }
     })
@@ -59,16 +75,23 @@ api.getGameSpec()
 
 api.getPlayers()
     .then((players) => {
+        players = (players || []).sort((a: IPlayer, b: IPlayer) => b.score - a.score);
         players.forEach((p) => scoreBoard.createOrUpdatePlayer(p));
         if (scoreBoard.numberOfPlayers >= 2) {
             const preInfo = document.querySelector('.pre-game') as HTMLElement;
             if (preInfo.style.display == '') {
                 preInfo.style.display = 'none'
-                document.querySelector('button').style.display = 'unset';
+                startButton.style.display = 'unset';
             }
         }
     });
 
-document.querySelector('button').addEventListener('click', () => {
+startButton.addEventListener('click', () => {
+    continuePlaying = true;
     api.createGame();
-})
+});
+
+stopButton.addEventListener('click', () => {
+    continuePlaying = false;
+    stopButton.disabled = true;
+});

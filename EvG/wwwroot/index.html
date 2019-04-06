@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
+    <link rel="shortcut icon" type="image/png" href="" />
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser.js"></script>
     <style type="text/css">
         @font-face {
@@ -42,6 +43,7 @@
             display: none;
             width: 120px;
             height: 60px;
+            margin-top: 16px;
             border: 1px solid #00cc00;
             color: #00cc00;
             box-shadow: #00cc00 2px 2px 8px;
@@ -62,8 +64,16 @@
             box-shadow: #00cc00 1px 1px 5px;
         }
 
+        button:disabled {
+            box-shadow: none;
+            border-color: #888;
+            color: #888;
+        }
+
         #game {
             display: none;
+            width: 320px;
+            height: 364px;
         }
 
         .player-area {
@@ -123,8 +133,9 @@
     <script type="module" src="index.js"></script>
     <div class="game-container">
         <div class="pre-game">Waiting<br />for<br />players...</div>
-        <button>Launch</button>
+        <button id="start-button">Launch</button>
         <div id="game"></div>
+        <button id="stop-button">Stop</button>
     </div>
     <div class="player-area">
         <h1>Scores</h1>

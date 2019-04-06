@@ -9,6 +9,7 @@ namespace EvG.Models
     {
         Game CurrentGame { get; }
         List<Player> Players { get; }
+        int GameValue { get; set; }
 
         event EventHandler<GameEventArgs> OnGameCreated;
         event EventHandler<GameEventArgs> OnGameEnded;
@@ -17,5 +18,6 @@ namespace EvG.Models
 
         void NewGame(GameSpec spec);
         void AddOrUpdatePlayer(Player player);
+        void UpdatePlayerScore(Player player);
     }
 }
