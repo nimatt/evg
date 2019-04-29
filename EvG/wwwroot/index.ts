@@ -89,6 +89,7 @@ api.getPlayers()
 startButton.addEventListener('click', () => {
     continuePlaying = true;
     api.createGame();
+    stopButton.disabled = false;
 });
 
 stopButton.addEventListener('click', () => {

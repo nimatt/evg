@@ -42,23 +42,57 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="wwwroot\index.ts" />
-    <TypeScriptCompile Include="wwwroot\js\IAttackAction.ts" />
-    <TypeScriptCompile Include="wwwroot\js\IGameEnded.ts" />
-    <TypeScriptCompile Include="wwwroot\js\IMoveAction.ts" />
-    <TypeScriptCompile Include="wwwroot\js\API.ts" />
-    <TypeScriptCompile Include="wwwroot\js\Direction.ts" />
-    <TypeScriptCompile Include="wwwroot\js\Game.ts" />
-    <TypeScriptCompile Include="wwwroot\js\IAnimationSpec.ts" />
-    <TypeScriptCompile Include="wwwroot\js\IGameSpec.ts" />
-    <TypeScriptCompile Include="wwwroot\js\IMap.ts" />
-    <TypeScriptCompile Include="wwwroot\js\IPlayer.ts" />
-    <TypeScriptCompile Include="wwwroot\js\ITileSet.ts" />
-    <TypeScriptCompile Include="wwwroot\js\IUnit.ts" />
-    <TypeScriptCompile Include="wwwroot\js\IUnitSpec.ts" />
-    <TypeScriptCompile Include="wwwroot\js\MainScene.ts" />
-    <TypeScriptCompile Include="wwwroot\js\ScoreBoard.ts" />
-    <TypeScriptCompile Include="wwwroot\js\TileType.ts" />
-    <TypeScriptCompile Include="wwwroot\js\Unit.ts" />
+    <TypeScriptCompile Include="wwwroot\js\IAttackAction.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\IGameEnded.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\IMoveAction.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\API.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\Direction.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\Game.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\IAnimationSpec.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\IGameSpec.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\IMap.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\IPlayer.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\ITileSet.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\IUnit.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\IUnitSpec.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\MainScene.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\ScoreBoard.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\TileType.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="wwwroot\js\Unit.ts">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </TypeScriptCompile>
   </ItemGroup>
 
   <ItemGroup>

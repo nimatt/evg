@@ -9,5 +9,7 @@ namespace EvG.Models
     {
         public int GameValue { get; set; }
         public bool ForceMove { get; set; }
+        public bool BloodLust { get; set; }
+        public bool Fog { get; set; }
     }
 }

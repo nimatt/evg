@@ -30,6 +30,8 @@ namespace EvG.Controllers
         {
             _gameEngine.GameConfig.GameValue = config.GameValue;
             _gameEngine.GameConfig.ForceMove = config.ForceMove;
+            _gameEngine.GameConfig.BloodLust = config.BloodLust;
+            _gameEngine.GameConfig.Fog = config.Fog;
             return Ok();
         }
     }

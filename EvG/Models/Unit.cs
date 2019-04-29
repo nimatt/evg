@@ -10,7 +10,7 @@ namespace EvG.Models
         public string Id { get; } = Guid.NewGuid().ToString();
         public string Type { get; set; }
         public int Health { get; set; } = 9;
-        public int Power { get; private set; } = 3;
+        public int Power { get; set; } = 3;
         public int X { get; set; }
         public int Y { get; set; }
 

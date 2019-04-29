@@ -7,7 +7,7 @@ namespace EvG.Models
 {
     public class Game
     {
-        public static readonly int MaxRounds = 30;
+        public static readonly int MaxRounds = 20;
 
         public GameSpec Spec { get; }
         public Unit[] Units { get; private set; }
@@ -85,8 +85,8 @@ namespace EvG.Models
                         var actions = await PlayerLookup[unit.Id].GetActions(
                             this,
                             unit,
-                            Units.Where((u) => u.Type == unit.Type).ToArray(),
-                            Units.Where((u) => u.Type != unit.Type).ToArray()
+                            GetPlayerUnits(unit),
+                            GetPlayerFoes(unit)
                         );
                         var performedActions = new HashSet<ActionType>();
                         foreach (var action in actions)
@@ -100,7 +100,7 @@ namespace EvG.Models
                                 }
                                 PerformAction(action, unit);
                                 performedActions.Add(action.Type);
-                                await Task.Delay(500);
+                                await Task.Delay(400);
                             }
                         }
                     }
@@ -128,6 +128,68 @@ namespace EvG.Models
             Updater.Start();
         }
 
+        private Unit[] GetPlayerUnits(Unit currentUnit)
+        {
+            return FilterVisibleUnits(currentUnit, Units.Where((unit) => unit.Type == currentUnit.Type)).ToArray();
+        }
+
+        private Unit[] GetPlayerFoes(Unit currentUnit)
+        {
+            return FilterVisibleUnits(currentUnit, Units.Where((unit) => unit.Type != currentUnit.Type)).ToArray();
+        }
+
+        private IEnumerable<Unit> FilterVisibleUnits(Unit currentUnit, IEnumerable<Unit> units)
+        {
+            if (GameConfig.Fog)
+            {
+                HashSet<Coordinate> visibleCoords = new HashSet<Coordinate>();
+                SetReachableCoordinates(visibleCoords, new Coordinate(currentUnit.X, currentUnit.Y), 3);
+                units = units.Where((unit) => visibleCoords.Contains(new Coordinate(unit.X, unit.Y)));
+            }
+
+            return units;
+        }
+
+        private void SetReachableCoordinates(HashSet<Coordinate> visited, Coordinate current, int stepsLeft)
+        {
+            visited.Add(current);
+
+            if (stepsLeft <= 0)
+            {
+                return;
+            }
+
+            var up = new Coordinate(current.X, current.Y - 1);
+            if (!visited.Contains(up) && IsOpenSquare(up))
+            {
+                SetReachableCoordinates(visited, up, stepsLeft - 1);
+            }
+            var down = new Coordinate(current.X, current.Y + 1);
+            if (!visited.Contains(down) && IsOpenSquare(down))
+            {
+                SetReachableCoordinates(visited, down, stepsLeft - 1);
+            }
+            var left = new Coordinate(current.X - 1, current.Y);
+            if (!visited.Contains(left) && IsOpenSquare(left))
+            {
+                SetReachableCoordinates(visited, left, stepsLeft - 1);
+            }
+            var right = new Coordinate(current.X + 1, current.Y);
+            if (!visited.Contains(right) && IsOpenSquare(right))
+            {
+                SetReachableCoordinates(visited, right, stepsLeft - 1);
+            }
+        }
+
+        private bool IsOpenSquare(Coordinate coord)
+        {
+            return coord.X >= 0 &&
+                coord.Y >= 0 &&
+                Spec.FloorMap.Length > coord.X &&
+                Spec.FloorMap[coord.X].Length > coord.Y &&
+                Spec.FloorMap[coord.X][coord.Y];
+        }
+
         private void PerformAction(Action action, Unit unit)
         {
             switch (action.Type)
@@ -147,6 +209,10 @@ namespace EvG.Models
                         if (target.Health <= 0)
                         {
                             OnUnitDied?.Invoke(this, new DeathEventArgs { Unit = target });
+                            if (GameConfig.BloodLust)
+                            {
+                                unit.Power += 1;
+                            }
                         }
                     }
                     OnUnitAttacked?.Invoke(this, new AttackEventArgs { Unit = unit, Target = target });
