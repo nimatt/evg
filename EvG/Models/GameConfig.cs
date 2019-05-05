@@ -11,5 +11,7 @@ namespace EvG.Models
         public bool ForceMove { get; set; }
         public bool BloodLust { get; set; }
         public bool Fog { get; set; }
+        public bool RandomOrder { get; set; }
+        public bool StaticOrder { get; set; }
     }
 }

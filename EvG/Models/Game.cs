@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace EvG.Models
@@ -54,6 +55,7 @@ namespace EvG.Models
         private Task Updater;
         private Dictionary<string, Player> PlayerLookup = new Dictionary<string, Player>();
         private int round = 0;
+        private RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
 
         public Game(GameSpec spec, Player player1, Player player2, GameConfig gameConfig)
         {
@@ -72,22 +74,43 @@ namespace EvG.Models
             Spec.Active = true;
             Updater = new Task(async () =>
             {
+                var playingUnits = GetInRandomOrder(Units);
+
                 while (Winner == null && round < MaxRounds)
                 {
-                    var movingUnits = Units
-                        .Where((u) => u.Health > 0)
-                        .OrderBy((u) => (u.Y << 8) | u.X);
+                    IEnumerable<Unit> movingUnits = playingUnits
+                        .Where((u) => u.Health > 0);
+
+                    if (!GameConfig.StaticOrder)
+                    {
+                        movingUnits = movingUnits
+                            .OrderBy((u) => (u.Y << 8) | u.X);
+                    }
+
+                    if (GameConfig.RandomOrder)
+                    {
+                        movingUnits = GetInRandomOrder(movingUnits);
+                    }
+
                     foreach (var unit in movingUnits)
                     {
                         if (unit.Health <= 0)
                             continue;
 
-                        var actions = await PlayerLookup[unit.Id].GetActions(
-                            this,
-                            unit,
-                            GetPlayerUnits(unit),
-                            GetPlayerFoes(unit)
-                        );
+                        var actions = new Action[0];
+                        try
+                        {
+                            actions = await PlayerLookup[unit.Id].GetActions(
+                                this,
+                                unit,
+                                GetPlayerUnits(unit),
+                                GetPlayerFoes(unit)
+                            );
+                        }
+                        catch(Exception e)
+                        {
+                            Console.WriteLine("Error fetching actions: " + e.Message);
+                        }
                         var performedActions = new HashSet<ActionType>();
                         foreach (var action in actions)
                         {
@@ -128,6 +151,20 @@ namespace EvG.Models
             Updater.Start();
         }
 
+        private IEnumerable<T> GetInRandomOrder<T>(IEnumerable<T> items)
+        {
+            if (items == null)
+                return null;
+
+            var bytes = new byte[items.Count()];
+            random.GetBytes(bytes);
+            return items
+                .Zip(bytes, (player, order) => new { player, order })
+                .OrderBy(o => o.order)
+                .Select(o => o.player)
+                .ToList();
+        }
+
         private Unit[] GetPlayerUnits(Unit currentUnit)
         {
             return FilterVisibleUnits(currentUnit, Units.Where((unit) => unit.Type == currentUnit.Type)).ToArray();
@@ -160,22 +197,22 @@ namespace EvG.Models
             }
 
             var up = new Coordinate(current.X, current.Y - 1);
-            if (!visited.Contains(up) && IsOpenSquare(up))
+            if (IsOpenSquare(up))
             {
                 SetReachableCoordinates(visited, up, stepsLeft - 1);
             }
             var down = new Coordinate(current.X, current.Y + 1);
-            if (!visited.Contains(down) && IsOpenSquare(down))
+            if (IsOpenSquare(down))
             {
                 SetReachableCoordinates(visited, down, stepsLeft - 1);
             }
             var left = new Coordinate(current.X - 1, current.Y);
-            if (!visited.Contains(left) && IsOpenSquare(left))
+            if (IsOpenSquare(left))
             {
                 SetReachableCoordinates(visited, left, stepsLeft - 1);
             }
             var right = new Coordinate(current.X + 1, current.Y);
-            if (!visited.Contains(right) && IsOpenSquare(right))
+            if (IsOpenSquare(right))
             {
                 SetReachableCoordinates(visited, right, stepsLeft - 1);
             }
@@ -211,7 +248,7 @@ namespace EvG.Models
                             OnUnitDied?.Invoke(this, new DeathEventArgs { Unit = target });
                             if (GameConfig.BloodLust)
                             {
-                                unit.Power += 1;
+                                unit.Power += 2;
                             }
                         }
                     }
