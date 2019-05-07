@@ -9,13 +9,18 @@ namespace EvG.Models
     {
         public string Id { get; } = Guid.NewGuid().ToString();
         public string Type { get; set; }
-        public int Health { get; set; } = 9;
+        public int Health { get; private set; } = 9;
         public int Power { get; set; } = 3;
         public int X { get; set; }
         public int Y { get; set; }
 
-        public void Move(Direction dir)
+        public void Move(Direction dir, bool forced)
         {
+            if (forced)
+            {
+                Health--;
+            }
+
             if (dir == Direction.Up)
                 Y--;
             else if (dir == Direction.Down)

@@ -28,7 +28,7 @@ export class Game {
                 this.engine = new Phaser.Game(this.config);
             })
             .then(() => {
-                setTimeout(() => api.startGame(), 7000);
+                setTimeout(() => api.startGame(), 4000);
             });
     }
 

@@ -9,7 +9,7 @@ namespace EvG.Models
     {
         public Game CurrentGame { get; private set; }
         public List<Player> Players { get; } = new List<Player>();
-        public GameConfig GameConfig { get; set; } = new GameConfig { GameValue = 1 };
+        public GameConfig GameConfig { get; set; } = new GameConfig();
 
         public event EventHandler<GameEventArgs> OnGameCreated;
         public event EventHandler<GameEventArgs> OnGameEnded;

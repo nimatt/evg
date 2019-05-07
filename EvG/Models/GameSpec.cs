@@ -11,7 +11,8 @@ namespace EvG.Models
 {
     public class GameSpec
     {
-        private static readonly string MapBase = "./wwwroot/assets/maps/";
+        private static readonly string MapBase =
+            new FileInfo(System.Reflection.Assembly.GetAssembly(typeof(GameSpec)).FullName).DirectoryName + "/wwwroot/assets/maps/";
         private static readonly RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
         public dynamic Map { get; private set; }
         public string Name { get; }
@@ -40,6 +41,11 @@ namespace EvG.Models
         private static string GetRandomMap()
         {
             var maps = Directory.GetFiles(MapBase, "*.json").Select(f => f.Substring(0, f.LastIndexOf('.'))).ToArray();
+            if (maps.Length == 0)
+            {
+                return null;
+            }
+
             var nums = new byte[2];
             random.GetBytes(nums);
             var map = maps[(nums[0] << 8 | nums[1]) % maps.Length];

@@ -203,9 +203,6 @@ export class MainScene extends Phaser.Scene {
         );
         p2Text.setY(MainScene.topBarHeight / 2 - p2Text.height / 2);
 
-        for (let i = 3; i > 0; i--) {
-            await this.showExpandingText(width, height, i.toFixed(0));
-        }
         await this.showExpandingText(width, height, 'GO');
     }
 

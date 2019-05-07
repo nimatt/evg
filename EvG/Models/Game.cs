@@ -72,83 +72,113 @@ namespace EvG.Models
         public void Start()
         {
             Spec.Active = true;
-            Updater = new Task(async () =>
-            {
-                var playingUnits = GetInRandomOrder(Units);
+            Updater = new Task(PlayGame);
+            Updater.Start();
+        }
 
-                while (Winner == null && round < MaxRounds)
+        private async void PlayGame()
+        {
+            var playingUnits = GetInRandomOrder(Units);
+
+            while (Winner == null && round < MaxRounds)
+            {
+                var movingUnits = GetMovingUnits(playingUnits);
+
+                foreach (var unit in movingUnits)
                 {
-                    IEnumerable<Unit> movingUnits = playingUnits
+                    if (unit.Health <= 0)
+                        continue;
+
+                    await PerformUnitTurn(unit);
+                }
+                round++;
+            }
+            await EndGame();
+        }
+
+        private async Task EndGame()
+        {
+            if (round == MaxRounds)
+            {
+                OnMaxRounds?.Invoke(this, new EventArgs());
+            }
+            OnGameEnded?.Invoke(this, new GameEventArgs("game-ended") { Winner = Winner });
+            foreach (var player in Players)
+            {
+                var playerUnit = Units.First(u => PlayerLookup[u.Id] == player);
+                try
+                {
+                    await player.GameEnded(
+                        this,
+                        Units.Where(u => u.Type == playerUnit.Type).ToArray(),
+                        Units.Where(u => u.Type != playerUnit.Type).ToArray()
+                    );
+                }
+                catch { /* We don't care */ }
+            }
+            Spec.Active = false;
+        }
+
+        private async Task PerformUnitTurn(Unit unit)
+        {
+            var actions = new Action[0];
+            try
+            {
+                actions = await PlayerLookup[unit.Id].GetActions(
+                    this,
+                    unit,
+                    GetPlayerUnits(unit),
+                    GetPlayerFoes(unit)
+                );
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error fetching actions: " + e.Message);
+            }
+            var performedActions = new HashSet<ActionType>();
+            foreach (var action in FilterDisallowedActions(unit, actions))
+            {
+                PerformAction(action, unit, performedActions.Contains(action.Type));
+                performedActions.Add(action.Type);
+                if (GameConfig.ActionDelay > 0)
+                {
+                    await Task.Delay(GameConfig.ActionDelay);
+                }
+            }
+        }
+
+        private IEnumerable<Action> FilterDisallowedActions(Unit unit, IEnumerable<Action> actions)
+        {
+            var performedActions = new HashSet<ActionType>();
+            return actions.Where((action) =>
+            {
+                if (!performedActions.Contains(action.Type))
+                {
+                    performedActions.Add(action.Type);
+                    return true;
+                }
+
+                return action.Type == ActionType.Move && GameConfig.ForceMove && unit.Health > 1;
+            });
+        }
+
+        private IEnumerable<Unit> GetMovingUnits(IEnumerable<Unit> units)
+        {
+            IEnumerable<Unit> movingUnits = units
                         .Where((u) => u.Health > 0);
 
-                    if (!GameConfig.StaticOrder)
-                    {
-                        movingUnits = movingUnits
-                            .OrderBy((u) => (u.Y << 8) | u.X);
-                    }
+            if (!GameConfig.StaticOrder)
+            {
+                movingUnits = movingUnits
+                    .OrderBy((u) => (u.Y << 8) | u.X);
+            }
 
-                    if (GameConfig.RandomOrder)
-                    {
-                        movingUnits = GetInRandomOrder(movingUnits);
-                    }
+            if (GameConfig.RandomOrder)
+            {
+                movingUnits = GetInRandomOrder(movingUnits);
+            }
 
-                    foreach (var unit in movingUnits)
-                    {
-                        if (unit.Health <= 0)
-                            continue;
-
-                        var actions = new Action[0];
-                        try
-                        {
-                            actions = await PlayerLookup[unit.Id].GetActions(
-                                this,
-                                unit,
-                                GetPlayerUnits(unit),
-                                GetPlayerFoes(unit)
-                            );
-                        }
-                        catch(Exception e)
-                        {
-                            Console.WriteLine("Error fetching actions: " + e.Message);
-                        }
-                        var performedActions = new HashSet<ActionType>();
-                        foreach (var action in actions)
-                        {
-                            if (!performedActions.Contains(action.Type) ||
-                               (action.Type == ActionType.Move && GameConfig.ForceMove && unit.Health > 1))
-                            {
-                                if (performedActions.Contains(action.Type) && action.Type == ActionType.Move && GameConfig.ForceMove)
-                                {
-                                    unit.Health--;
-                                }
-                                PerformAction(action, unit);
-                                performedActions.Add(action.Type);
-                                await Task.Delay(400);
-                            }
-                        }
-                    }
-                    round++;
-                }
-                if (round == MaxRounds)
-                {
-                    OnMaxRounds?.Invoke(this, new EventArgs());
-                }
-                OnGameEnded?.Invoke(this, new GameEventArgs("game-ended") { Winner = Winner });
-                foreach (var player in Players)
-                {
-                    var playerUnit = Units.First(u => PlayerLookup[u.Id] == player);
-                    try
-                    {
-                        await player.GameEnded(
-                            this,
-                            Units.Where(u => u.Type == playerUnit.Type).ToArray(),
-                            Units.Where(u => u.Type != playerUnit.Type).ToArray()
-                        );
-                    } catch { /* We dont' care */ }
-                }
-                Spec.Active = false;
-            });
-            Updater.Start();
+            return movingUnits;
         }
 
         private IEnumerable<T> GetInRandomOrder<T>(IEnumerable<T> items)
@@ -196,6 +226,7 @@ namespace EvG.Models
                 return;
             }
 
+            // This is inefficient, we are re-visiting some areas
             var up = new Coordinate(current.X, current.Y - 1);
             if (IsOpenSquare(up))
             {
@@ -227,14 +258,14 @@ namespace EvG.Models
                 Spec.FloorMap[coord.X][coord.Y];
         }
 
-        private void PerformAction(Action action, Unit unit)
+        private void PerformAction(Action action, Unit unit, bool alreadyPerfomedType)
         {
             switch (action.Type)
             {
                 case ActionType.Move:
                     if (CanMove(unit, action.Direction))
                     {
-                        unit.Move(action.Direction);
+                        unit.Move(action.Direction, alreadyPerfomedType);
                         OnUnitMoved?.Invoke(this, new MoveEventArgs { Unit = unit });
                     }
                     break;
