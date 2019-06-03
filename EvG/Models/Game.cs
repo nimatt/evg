@@ -24,12 +24,21 @@ namespace EvG.Models
             get
             {
                 var unitGroups = Units.Where((u) => u.Health > 0).GroupBy((u) => u.Type).ToArray();
+                if (unitGroups.Length == 1)
+                {
+                    return PlayerLookup[unitGroups[0].ToArray()[0].Id];
+                }
                 if (round < MaxRounds)
                 {
                     return unitGroups.Length == 1 ? PlayerLookup[unitGroups[0].ToArray()[0].Id] : null;
                 }
                 else
                 {
+                    if (unitGroups.Length == 0)
+                    {
+                        return null;
+                    }   
+
                     var groupHealth = new int[unitGroups.Length];
                     for (var i = 0; i < unitGroups.Length; i++)
                     {

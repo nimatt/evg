@@ -26,12 +26,26 @@ namespace EvG.Controllers
         }
 
         [HttpPut("api/[controller]/game-config")]
-        public ActionResult SetGameConfig([FromBody]GameConfig config)
+        public ActionResult SetGameConfig([FromBody]GameConfigInput config)
         {
-            _gameEngine.GameConfig.GameValue = config.GameValue;
-            _gameEngine.GameConfig.ForceMove = config.ForceMove;
-            _gameEngine.GameConfig.BloodLust = config.BloodLust;
-            _gameEngine.GameConfig.Fog = config.Fog;
+            if (config == null)
+                return Ok();
+
+            if (config.GameValue != null)
+                _gameEngine.GameConfig.GameValue = (int)config.GameValue;
+
+            if (config.ActionDelay != null)
+                _gameEngine.GameConfig.ActionDelay = (int)config.ActionDelay;
+
+            if (config.ForceMove != null)
+                _gameEngine.GameConfig.ForceMove = (bool)config.ForceMove;
+
+            if (config.BloodLust != null)
+                _gameEngine.GameConfig.BloodLust = (bool)config.BloodLust;
+
+            if (config.Fog != null)
+                _gameEngine.GameConfig.Fog = (bool)config.Fog;
+
             return Ok();
         }
     }
