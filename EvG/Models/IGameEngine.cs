@@ -19,5 +19,6 @@ namespace EvG.Models
         void NewGame(GameSpec spec);
         void AddOrUpdatePlayer(Player player);
         void UpdatePlayerScore(Player player);
+        void SetPlayerTimeout(float playerTimeout);
     }
 }

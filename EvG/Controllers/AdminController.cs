@@ -46,6 +46,16 @@ namespace EvG.Controllers
             if (config.Fog != null)
                 _gameEngine.GameConfig.Fog = (bool)config.Fog;
 
+            if (config.RandomOrder != null)
+                _gameEngine.GameConfig.RandomOrder = (bool)config.RandomOrder;
+
+            if (config.StaticOrder != null)
+                _gameEngine.GameConfig.RandomOrder = (bool)config.StaticOrder;
+
+            if (config.PlayerTimeout != null)
+                _gameEngine.SetPlayerTimeout((float)config.PlayerTimeout);
+
+
             return Ok();
         }
     }

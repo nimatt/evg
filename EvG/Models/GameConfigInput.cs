@@ -14,5 +14,6 @@ namespace EvG.Models
         public bool? Fog { get; set; }
         public bool? RandomOrder { get; set; }
         public bool? StaticOrder { get; set; }
+        public float? PlayerTimeout { get; set; }
     }
 }

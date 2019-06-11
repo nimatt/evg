@@ -114,5 +114,13 @@ namespace EvG.Models
             }
             return draw;
         }
+
+        public void SetPlayerTimeout(float playerTimeout)
+        {
+            if (Players != null)
+            {
+                Players.ForEach(player => player.SetTimeout(playerTimeout));
+            }
+        }
     }
 }

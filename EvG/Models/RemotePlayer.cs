@@ -30,6 +30,13 @@ namespace EvG.Models
             _client.Timeout = TimeSpan.FromSeconds(1);
         }
 
+        public override void SetTimeout(float timeout)
+        {
+            _client.Dispose();
+            _client = new HttpClient();
+            _client.Timeout = TimeSpan.FromSeconds(timeout);
+        }
+
         public override async Task<Action[]> GetActions(Game game, Unit unit, Unit[] units, Unit[] foes)
         {
             var data = JsonConvert.SerializeObject(new

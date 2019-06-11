@@ -11,6 +11,11 @@ namespace EvG.Models
         public string Name { get; set; }
         public int Score { get; set; }
 
+        public virtual void SetTimeout(float timeout)
+        {
+            return;
+        }
+
         public virtual Task<Action[]> GetActions(Game game, Unit unit, Unit[] units, Unit[] foes)
         {
             return Task.FromResult(new Action[0]);
